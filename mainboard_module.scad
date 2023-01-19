@@ -1,6 +1,6 @@
 
-rail_length = 90;
-rail_distance = 90;
+rail_length = 90+90;
+rail_distance = 110;
 
 bottomrail_width = 11;
 bottomrail_width_actual = 16;
@@ -33,7 +33,7 @@ difference() {
 }
 
 translate([0, 0, 5.7])
-translate([-20, 42.5, -10])
+translate([-20, 42.5 + 45, -10])
 rotate([0, 0, 90]) 
 union() {
     cube(size = [bottomrail_width - 0.5, 5, bottomrail_height - 0.9 ], center = true);
@@ -43,7 +43,7 @@ union() {
 }
 
 translate([0, 0, 5.7])
-translate([-20, -42.5, -10])
+translate([-20, -42.5 + -45, -10])
 rotate([0, 0, 90]) 
 union() {
     cube(size = [bottomrail_width - 0.5, 5, bottomrail_height - 0.9], center = true);
