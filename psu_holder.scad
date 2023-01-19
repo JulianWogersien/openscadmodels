@@ -94,7 +94,8 @@ cube(size = [psu_height, 10, 10], center = true);
 
 translate([88, -65, 15])
 difference() {
-    cube(size = [10, psu_length, 10], center = true);
+    translate([10, -5, 0])
+    cube(size = [10, psu_length + 10, 10], center = true);
     
     translate([-2.5, -psu_length / 3, 0])
     cube(size = [5, 10, 10], center = true);
@@ -103,10 +104,10 @@ difference() {
     cube(size = [5, 10, 10], center = true);
 }
 
-translate([50, -65 * 2, 15])
-cube(size = [psu_height, 10, 10], center = true);
+translate([55, -140, 15])
+cube(size = [psu_height + 10, 10, 10], center = true);
 
-translate([13, -135, 15])
+translate([13, -145, 15])
 rotate([90, 0, 0])
 cylinder(d = 10, h = 10);
 
