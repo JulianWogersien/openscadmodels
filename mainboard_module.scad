@@ -20,7 +20,7 @@ difference() {
     cube(size = [toprail_width, rail_length, toprail_height], center = true);
     
     translate([0, 0, 3]) 
-    cube(size = [toprail_width / 2, rail_length, toprail_height + 2], center = true);
+    cube(size = [toprail_width / 1.5, rail_length, toprail_height + 2], center = true);
 }
 
 difference() {

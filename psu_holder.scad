@@ -15,13 +15,9 @@ mountingHoleCount=3;
 mountingHoleEdgeOffset=4;
 clearance=0.2;
 tiny=0.005;
-
-// calculated values
 hingeHalfExtrudeLength=hingeLength/2-clearance/2;
 mountingHoleMoveIncrement=(hingeLength-2*mountingHoleEdgeOffset)/
   (mountingHoleCount-1);
-
-// modules
 module hingeBaseProfile() {
   translate([pivotRadius,0,0]){
     square([baseWidth,baseThickness]);
@@ -90,10 +86,38 @@ module plateHoles() {
   }
 }
 
-// using high-level modules
 hingeHalfFemale();
 hingeHalfMale();
 
+translate([50, 0, 15])
+cube(size = [psu_height, 10, 10], center = true);
+
+translate([88, -65, 15])
+difference() {
+    cube(size = [10, psu_length, 10], center = true);
+    
+    translate([-2.5, -psu_length / 3, 0])
+    cube(size = [5, 10, 10], center = true);
+    
+    translate([-2.5, psu_length / 3, 0])
+    cube(size = [5, 10, 10], center = true);
+}
+
+translate([50, -65 * 2, 15])
+cube(size = [psu_height, 10, 10], center = true);
+
+translate([13, -135, 15])
+rotate([90, 0, 0])
+cylinder(d = 10, h = 10);
+
+translate([0, -100, 10])
+difference() {
+    cube(size = [20, 20, 20], center = true);
+    translate([0, 4, 0])
+    cylinder(d = 10, h = 10);
+    translate([0, -8, 0])
+    cube(size = [20, 20, 20], center = true);
+}
 
 /*difference() {
     cube(size = [psu_width + 20, 10, psu_height + 10]);
