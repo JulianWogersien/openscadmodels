@@ -30,11 +30,11 @@ difference(){
         linear_extrude(100)
         circle(d=5, $fn=100);
         
-        translate([-50,0,-1])
+        translate([-50,0,2])
         linear_extrude(500)
         circle(d=9, $fn=100);
         
-        translate([50,0,-1])
+        translate([50,0,2])
         linear_extrude(500)
         circle(d=9, $fn=100);
     }
