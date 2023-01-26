@@ -1,6 +1,7 @@
 
 // coil size = [84, 35, 2]
 
+translate([0, 0, -2]) 
 rotate([0, 180, 0]) 
 difference(){
 translate([0,0,-1])
