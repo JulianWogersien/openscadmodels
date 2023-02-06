@@ -4,7 +4,7 @@ rail_distance = 110;
 
 bottomrail_width = 11;
 bottomrail_width_actual = 16;
-bottomrail_height = 2.5;
+bottomrail_height = 2.7;
 bottomrail_height_actual = 8;
 
 toprail_width = 20.5;
