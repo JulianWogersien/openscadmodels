@@ -50,7 +50,8 @@ cylinder(h = 10, r = 5);
 translate([0, 180, -55]) 
 difference(){
     translate([0, -5, -2])
-    cube(size = [10, 10, 7], center = true);
+    cube(size = [13, 13, 7], center = true);
     rotate([90, 0, 0])
-    cylinder(h = 10, r = 5);
+    translate([0, 0, -3])
+    cylinder(h = 30, r = 5);
 }
