@@ -2,5 +2,16 @@ libraries/
 ./libraries*
 ./libraries
 
+sliced/
+./sliced*
+./sliced
+
+nailcableclips/
+./nailcableclips*
+./nailcableclips
+
 *.stl
 *stl
+
+*.STL
+*STL
