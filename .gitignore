@@ -1,6 +1,6 @@
-libraries/
-./libraries*
-./libraries
+/libraries/bolts
+/libraries/gears
+/libraries/gridfinity
 
 sliced/
 ./sliced*

@@ -1,3 +1,4 @@
 # openscadmodels
 openscad models i wrote
-(some of these require libraries that i did not include here because i didnt want to run into any licensing issues)
+
+some libraries are missing for example the BOLTS library, i did not include these because i didnt want to run into any licensing issues  
