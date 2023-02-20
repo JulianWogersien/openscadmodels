@@ -1,9 +1,11 @@
 
+use<libraries/scmath/trig.scad>
+
 dist_x = 15;
 dist_y = 15;
 height = 120;
 beam_dim = 3;
-length_beam = sqrt((dist_x * dist_x) + (dist_y * dist_y));
+length_beam = hypo(dist_x, dist_y);
 outerbeam_dim = 4;
 
 cube(size = [outerbeam_dim, outerbeam_dim, height], center = true);
