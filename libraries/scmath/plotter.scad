@@ -1,7 +1,7 @@
 use<basic2d.scad>
 use<basic3d.scad>
 
-module graph_function_3d(f, min = -10, max = 10, step_size = 1, color = "blue") {
+module plot_function_3d(f, min = -10, max = 10, step_size = 1, color = "blue") {
     total_steps = 0;
 
     samples_arr = [for(x = [min:step_size:max]) for(y = [min:step_size:max]) [x, y, callfunc3(x, y, f)] ];
@@ -12,7 +12,7 @@ module graph_function_3d(f, min = -10, max = 10, step_size = 1, color = "blue") 
     }
 }
 
-module graph_function_2d(f, min = -100, max = 100, step_size = 1, color = "red") {
+module plot_function_2d(f, min = -100, max = 100, step_size = 1, color = "red") {
     total_steps = 0;
 
     samples_arr = [for(x = [min:max]) [x, callfunc(x, f)] ];

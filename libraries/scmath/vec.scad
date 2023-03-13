@@ -1,9 +1,9 @@
 function vec3(x, y, z) = [x, y, z];
 function vec2(x, y) = [x, y];
 function vec4(x, y, z, w) = [x, y, z, w];
-function vec2z() = [0, 0, 0];
+function vec2z() = [0, 0];
 function vec3z() = [0, 0, 0];
-function vec4z() = [0, 0, 0];
+function vec4z() = [0, 0, 0, 0];
 
 function vec2add(v1, v2) = [v1[0] + v2[0], v1[1] + v2[1]];
 function vec3add(v1, v2) = [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]];
@@ -37,3 +37,9 @@ function vec3cross(v1, v2) = [v1[1]*v2[2] - v1[2]*v2[1], v1[2]*v2[0] - v1[0]*v2[
 
 function vec2frompolar(length, angle) = [length * cos(angle), length * sin(angle)];
 function vec2intopolar(v1) = [sqrt(v1[0]*v1[0] + v1[1]*v1[1]), atan(v1[1] / v1[0])];
+
+function vec3divscalar(v1, scalar) = [v1[0] / scalar, v1[1] / scalar, v1[1] / scalar];
+
+function vec2listsum(list, idx = 0, result = vec2z()) = idx >= len(list) ? result : vec2listsum(list, idx + 1, vec2add(result, list[idx]));
+function vec3listsum(list, idx = 0, result = vec3z()) = idx >= len(list) ? result : vec3listsum(list, idx + 1, vec3add(result, list[idx]));
+function vec4listsum(list, idx = 0, result = vec4z()) = idx >= len(list) ? result : vec4listsum(list, idx + 1, vec4add(result, list[idx]));

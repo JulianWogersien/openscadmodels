@@ -1,3 +1,4 @@
-use<basic3d.scad>
+use<basic2d.scad>
 
-tetrahedron();
+linear_extrude(height = 4)
+regular_hexagon(3);
