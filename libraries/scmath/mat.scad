@@ -51,3 +51,20 @@ function inversemat4(m1) = scalarmat4(adjugatemat4(cofactormatrixmat4(determinan
 function divmat2(m1, m2) = m1 * inversemat2(m2);
 function divmat3(m1, m2) = m1 * inversemat3(m2);
 function divmat4(m1, m2) = m1 * inversemat4(m2);
+
+function rotationmat2(x, y) = mat2(cos(x), -sin(x), sin(x), cos(x)) * mat2(cos(y), -sin(y), sin(y), cos(y));
+function rotationmat3(x, y, z) = let(matx = is_undef(x) ? identitymat3 : rotationmat3x(x), maty = is_undef(y) ? identitymat3 : rotationmat3x(y), matz = is_undef(z) ? identitymat3 : rotationmat3x(z)) matx * maty * matz;
+
+function rotationmat3z(angle) = mat3(cos(angle), -sin(angle), 0, sin(angle), cos(angle), 0, 0, 0, 1);
+function rotationmat3y(angle) = mat3(cos(angle), 0, -sin(angle), 0, 1, 0, sin(angle), 0, cos(angle));
+function rotationmat3x(angle) = mat3(1, 0, 0, 0, cos(angle), sin(angle), 0, -sin(angle), cos(angle));
+
+function scalemat2(x, y) = let(matx = is_undef(x) ? identitymat2() : scalemat2x(x), maty = is_undef(y) ? identitymat2() : scalemat2y(y)) matx * maty;
+function scalemat3(x, y, z) = let(matx = is_undef(x) ? identitymat3() : scalemat3x(x), maty = is_undef(y) ? identitymat3() : scalemat3y(y), matz = is_undef(z) ? identitymat3() : scalemat3z(z)) matx * maty * matz;
+
+function scalemat2x(x) = mat2(x, 0, 0, 1);
+function scalemat2y(y) = mat2(1, 0, 0 , y);
+
+function scalemat3x(x) = mat3(x, 0, 0, 0, 1, 0, 0, 0, 1);
+function scalemat3y(y) = mat3(1, 0, 0, 0, y, 0, 0, 0, 1);
+function scalemat3z(z) = mat3(1, 0, 0, 0, 1, 0, 0, 0, z);

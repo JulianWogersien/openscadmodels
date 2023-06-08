@@ -1,37 +1,15 @@
 use<vec.scad>
 use<mesh.scad>
+use<list.scad>
 
+/*
 // generates the dual polyhedron of given mesh of triangles
 // a dual polyhedron can be defined as for each convex polyhedron there is a dual polyhedron with a face for each vertex and a vertex for each face
-function dual(mesh) = 
+function fdual_polyhedron(mesh) = 
     let(
-        tmp_vertices = [for(face_indices = mesh[1]) concat(tmp_vertices, [centroid(mesh, i)])],
-        tmp_faces = [],
-
-        fvertex = [],
-
-        num_faces = len(mesh[1]),
-        i = 0
+        
     )
-        for (face_indices = mesh[1]) {
-            centroid = centroid(mesh, i);
-
-            tmp_vertices = concat(tmp_vertices, [centroid]);
-
-            fvertex = concat(fvertex, [len(tmp_vertices) - 1]);
-
-            i++;
-        }
-
-        for (vertex_indices = mesh[0]) {
-            new_face = [];
-            for (i = vertex_indices) {
-                new_vertex_index = fvertex[i];
-                new_face = concat(new_face, [new_vertex_index]);
-            }
-            tmp_faces = concat(tmp_faces, [new_face]);
-        }
-        [tmp_vertices, tmp_faces]
+        [tmp_vertices, tmp_faces];*/
    
 
 // generates a tetrahedron (four vertices and four triangular faces)
@@ -58,8 +36,8 @@ function fhexahedron() =
     ) [vertices, indices];
 
 // generates a octahedron
-function foctahedron() = 
-    project_to_unit_sphere(fdual_polyhedron(fhexahedron()));
+/*function foctahedron() = 
+    project_to_unit_sphere(fdual_polyhedron(fhexahedron()));*/
 
 // generates a line between given xyz points with optional thickness
 module line3d(x1, y1, z1, x2, y2, z2, thickness = 0.1) {
@@ -76,7 +54,7 @@ module line3d(x1, y1, z1, x2, y2, z2, thickness = 0.1) {
 module tetrahedron(size = [1, 1, 1]) {
     mesh = ftetrahedron();
 
-    if(scale != [1, 1, 1]) {
+    if(size != [1, 1, 1]) {
         resize(size)
         polyhedron(mesh[0], mesh[1]);
     } else {
@@ -88,7 +66,7 @@ module tetrahedron(size = [1, 1, 1]) {
 module hexahedron(size = [1, 1, 1]) {
     mesh = fhexahedron();
 
-    if(scale != [1, 1, 1]) {
+    if(size != [1, 1, 1]) {
         resize(size)
         polyhedron(mesh[0], mesh[1]);
     } else {
@@ -98,18 +76,26 @@ module hexahedron(size = [1, 1, 1]) {
 
 // generates and displays a dual polyhedron of given mesh of triangles
 // a dual polyhedron can be defined as for each convex polyhedron there is a dual polyhedron with a face for each vertex and a vertex for each face
-module dual_polyhedron(mesh) {
+/*module dual_polyhedron(mesh) {
     polyhedron(fdual_polyhedron(mesh));
-}
+}*/
 
 // generates and displays a octahedron at optionally given size
-module octahedron(size = [1, 1, 1]) {
+/*module octahedron(size = [1, 1, 1]) {
     mesh = foctahedron();
-
-    if(scale != [1, 1, 1]) {
+    echo(mesh);
+    if(size != [1, 1, 1]) {
         resize(size)
         polyhedron(mesh[0], mesh[1]);
     } else {
         polyhedron(mesh[0], mesh[1]);
     }
+}*/
+
+module catmull_clark(mesh) {
+    face_points = [for(face = [0:len(mesh[1])-1]) centroid(mesh, face)];
+    face_size = len(mesh[1][0])-1;
+
+    edge_points = [for(i = [0:len(mesh[0])]) i];
+    for()
 }
