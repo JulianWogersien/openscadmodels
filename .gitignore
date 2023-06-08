@@ -1,6 +1,7 @@
 /libraries/bolts
 /libraries/gears
 /libraries/gridfinity
+/libraries/scmath
 
 sliced/
 ./sliced*
