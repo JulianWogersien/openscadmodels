@@ -1,121 +1,103 @@
 
 $fn = $preview ? 100 : 1000;
 
-EXTRUSION_PLATE_WIDTH = 40;
-EXTRUSION_PLATE_DEPTH = 20;
-EXTRUSION_PLATE_HEIGHT = 20;
-EXTRUSION_PLATE_HEIGHT_OUTSET = 10;
-HOLE_DIAMETER = 4.2;
+module Cylindricalheadscrew(head_diameter, tail_diameter) {
+    union() {
+        linear_extrude(height = 100) 
+        circle(d = tail_diameter);
+        translate([0, 0, 0])
+        linear_extrude(height = 50) 
+        circle(d = head_diameter);
+    }
+}
 
-WALL_MOUNT_ADAPTER_WIDTH = 20;
-WALL_MOUNT_ADAPTER_DEPTH = 20;
-WALL_MOUNT_ADAPTER_HEIGHT = 10;
-WALL_MOUNT_ADAPTER_CIRCLE_DIAMETER = 4;
+CLEARANCE = 0.1;
 
-ARM_WIDTH = 200;
-ARM_HEIGHT = 20;
-ARM_DEPTH = 20;
-DIAGONAL = sqrt(ARM_WIDTH * ARM_WIDTH + ARM_WIDTH * ARM_WIDTH);
+EXTRUSIONWIDTH = 20;
+EXTRUSIONDEPTH = 40;
+EXTRUSIONHEIGHT = 200;
+
+ACTUAL_WIDTH = EXTRUSIONWIDTH + 6;
+
+SCREW_TAIL_DIA = 5;
+SCREW_HEAD_DIA = 8.3;
+
+WALLSCREW_TAIL_DIAG = 5.9;
+WALLSCREW_HEAD_DIAG = 9.8;
+
+HOLE_DIA = 6;
+
+module ExtrusionMountingPlate() {
+    union() {
+        cube(size = [EXTRUSIONWIDTH + CLEARANCE, EXTRUSIONDEPTH + CLEARANCE, EXTRUSIONWIDTH + CLEARANCE], center = true);
+
+        translate([0, EXTRUSIONWIDTH / 2, 70])
+        rotate([0, 180, 0])
+        Cylindricalheadscrew(SCREW_HEAD_DIA, SCREW_TAIL_DIA);
+
+        translate([0, EXTRUSIONWIDTH / -2, 70])
+        rotate([0, 180, 0])
+        Cylindricalheadscrew(SCREW_HEAD_DIA, SCREW_TAIL_DIA);
+    }
+}
+
+module MountingPlate() {
+
+    difference() {
+        linear_extrude(height = EXTRUSIONWIDTH, scale = 2.0, center = true) 
+        square(size = [EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
+
+        translate([0, 0, -50])
+        Cylindricalheadscrew(WALLSCREW_HEAD_DIAG, WALLSCREW_TAIL_DIAG);
+    }
+}
 
 difference() {
     union() {
-        translate([0, (ARM_WIDTH / 2) + ARM_DEPTH / 2, (ARM_DEPTH / 2) - 1.25])
-        rotate([0, 0, 90])
-        cube(size = [ARM_WIDTH, ARM_DEPTH, ARM_HEIGHT], center = true);
-
-        translate([0, (ARM_WIDTH) + ARM_DEPTH / 2, (ARM_WIDTH / -2) + 16])
-        rotate([0, 90, 0])
-        cube(size = [ARM_WIDTH + 5, ARM_DEPTH, ARM_HEIGHT], center = true);
-
-        translate([0, 5 + (ARM_WIDTH / 2) + ARM_DEPTH / 2, 6 + -ARM_WIDTH / 2])
-        rotate([0, 45, 90])
-        cube(size = [DIAGONAL - 6, ARM_DEPTH, ARM_HEIGHT], center = true);
-    
         difference() {
-            union() {
-                translate([ARM_DEPTH, ARM_WIDTH + 15 ,0])
-                rotate([90, 0, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH, WALL_MOUNT_ADAPTER_DEPTH, WALL_MOUNT_ADAPTER_HEIGHT], center = true);
+            hull() {
+                cube(size = [ACTUAL_WIDTH, EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
 
-                translate([(ARM_DEPTH / 1.5) - 0.5, ARM_WIDTH + 15 , -WALL_MOUNT_ADAPTER_HEIGHT -3])
-                rotate([90, 45, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH , sqrt(2 * WALL_MOUNT_ADAPTER_DEPTH^2 ), WALL_MOUNT_ADAPTER_HEIGHT], center = true);
+                translate([0, EXTRUSIONHEIGHT, 0])
+                cube(size = [ACTUAL_WIDTH, EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
             }
 
-            translate([ARM_DEPTH, ARM_WIDTH + 30 ,0])
-            rotate([90, 0 ,0])
-            linear_extrude(height = 100) 
-            circle(d = WALL_MOUNT_ADAPTER_CIRCLE_DIAMETER);
+
+            translate([-30, EXTRUSIONHEIGHT / 4, 0])
+            rotate([0, 90, 0])
+            linear_extrude(height = 1000) 
+            circle(d = HOLE_DIA);
+
+            translate([-30, EXTRUSIONHEIGHT / 3, 0])
+            rotate([0, 90, 0])
+            linear_extrude(height = 1000) 
+            circle(d = HOLE_DIA);
         }
 
-        difference() {
-            union() {
-                translate([-ARM_DEPTH, ARM_WIDTH + 15 ,0])
-                rotate([90, 0, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH, WALL_MOUNT_ADAPTER_DEPTH, WALL_MOUNT_ADAPTER_HEIGHT], center = true);
-            
-                translate([(ARM_DEPTH / -1.5) + 0.5, ARM_WIDTH + 15 , -WALL_MOUNT_ADAPTER_HEIGHT -3])
-                rotate([90, -45, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH , sqrt(2 * WALL_MOUNT_ADAPTER_DEPTH^2 ), WALL_MOUNT_ADAPTER_HEIGHT], center = true);
-            }
+        hull() {
+            cube(size = [ACTUAL_WIDTH, EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
 
-            translate([-ARM_DEPTH, ARM_WIDTH + 30 ,0])
-            rotate([90, 0 ,0])
-            linear_extrude(height = 100) 
-            circle(d = WALL_MOUNT_ADAPTER_CIRCLE_DIAMETER);
+            translate([0, 0, EXTRUSIONHEIGHT])
+            cube(size = [ACTUAL_WIDTH, EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
         }
 
-        difference() {
-            union() {
-                translate([ARM_DEPTH, ARM_WIDTH + 15 , -100])
-                rotate([90, 0, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH, WALL_MOUNT_ADAPTER_DEPTH, WALL_MOUNT_ADAPTER_HEIGHT], center = true);
-            
-                translate([(ARM_DEPTH / 1.5) - 0.5, ARM_WIDTH + 15 , -100 + -WALL_MOUNT_ADAPTER_HEIGHT -3])
-                rotate([90, 45, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH , sqrt(2 * WALL_MOUNT_ADAPTER_DEPTH^2 ), WALL_MOUNT_ADAPTER_HEIGHT], center = true);
-            }
+        hull() {
+            translate([0, EXTRUSIONHEIGHT, 0])
+            cube(size = [ACTUAL_WIDTH, EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
 
-            translate([ARM_DEPTH, ARM_WIDTH + 30 , -100])
-            rotate([90, 0 ,0])
-            linear_extrude(height = 100) 
-            circle(d = WALL_MOUNT_ADAPTER_CIRCLE_DIAMETER);
+            translate([0, 0, EXTRUSIONHEIGHT])
+            cube(size = [ACTUAL_WIDTH, EXTRUSIONWIDTH, EXTRUSIONWIDTH], center = true);
         }
 
-        difference() {
-            union() {
-                translate([-ARM_DEPTH, ARM_WIDTH + 15 , -100])
-                rotate([90, 0, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH, WALL_MOUNT_ADAPTER_DEPTH, WALL_MOUNT_ADAPTER_HEIGHT], center = true);
+        translate([EXTRUSIONWIDTH, 0, EXTRUSIONHEIGHT * 1/4])
+        rotate([0, 90, -90])
+        MountingPlate();
 
-                translate([(ARM_DEPTH / -1.5) + 0.5, ARM_WIDTH + 15 , -100 + -WALL_MOUNT_ADAPTER_HEIGHT -3])
-                rotate([90, -45, 0])
-                cube(size = [WALL_MOUNT_ADAPTER_WIDTH , sqrt(2 * WALL_MOUNT_ADAPTER_DEPTH^2 ), WALL_MOUNT_ADAPTER_HEIGHT], center = true);
-            }
-
-            translate([-ARM_DEPTH, ARM_WIDTH + 30 , -100])
-            rotate([90, 0 ,0])
-            linear_extrude(height = 100) 
-            circle(d = WALL_MOUNT_ADAPTER_CIRCLE_DIAMETER);
-        }
+        translate([-EXTRUSIONWIDTH, 0, EXTRUSIONHEIGHT * 1/1.5])
+        rotate([0, 90, -90])
+        MountingPlate();
     }
-    
-    translate([0, 30 ,10])
-    cube(size = [EXTRUSION_PLATE_WIDTH, EXTRUSION_PLATE_WIDTH, EXTRUSION_PLATE_HEIGHT], center = true);
 
-    translate([0, 20 ,-40])
-    linear_extrude(height = 100) 
-    circle(d = HOLE_DIAMETER);
-
-    translate([0, 40 ,-40])
-    linear_extrude(height = 100) 
-    circle(d = HOLE_DIAMETER);
-
-    translate([0, 20 ,-20])
-    linear_extrude(height = 10) 
-    circle(d = HOLE_DIAMETER + 1);
-
-    translate([0, 40 ,-20])
-    linear_extrude(height = 10) 
-    circle(d = HOLE_DIAMETER + 1);
+    translate([0, EXTRUSIONHEIGHT - EXTRUSIONWIDTH, 0]) 
+    ExtrusionMountingPlate();
 }
