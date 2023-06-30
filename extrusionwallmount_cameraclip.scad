@@ -1,134 +1,175 @@
 
 $fn = $preview ? 100 : 500;
 
+MIDDLE_HEIGHT = 30;
+MIDDLE_INSET_HEIGHT = 15;
+MIDDLE_INNER_DIAM = 50.2;
+MIDDLE_OUTER_DIAM = 71;
+MIDDLE_INSET = 10;
+TOTAL_HEIGHT = 30;
+
+HOLDER_CUBE_SIZE = [90, 90, MIDDLE_HEIGHT - 5];
+
+CONNECTOR_DEPTH = 20;
+
+BEAM_WIDTH = 40;
+BEAM_DEPTH = 20;
+
+SCREW_TAIL_DIAM = 4.8;
+SCREW_HEAD_DIAM = 8.4;
+
+SCREWCLAMP_HEAD_DIAM = 7.1;
+SCREWCLAMP_TAIL_DIAM = 3.9;
+
 module Cylindricalheadscrew(head_diameter, tail_diameter) {
     union() {
-        linear_extrude(height = 100) 
+        linear_extrude(height = 1000) 
         circle(d = tail_diameter);
         translate([0, 0, 0])
-        linear_extrude(height = 50) 
+        linear_extrude(height = 500) 
         circle(d = head_diameter);
     }
 }
 
-CAMERA_DIAMETER_DIFFERENCE = 0.05;
-CAMERA_DIAMETER = 58;
-SCREW_DIAMETER = 3;
-EXTRUSION_SCREW_DIAMETER = 3.5;
-
-EXTRUSION_MOUNT_HEIGHT = 5;
-EXTRUSION_MOUNT_DEPTH = 60;
-EXTRUSION_WIDTH = 40;
-EXTRUSION_HEIGHT = 20;
-
-CAMERA_MOUNT_HEIGHT = 60;
-CAMERA_MOUNT_THICKNESS = 7;
-
-CAMERA_MOUNT_PLATE_LENGTH = 10;
-
-CLAMP_SCREW_DIA = 5;
-CLAMP_SCREW_HEAD_DIA = 8.3;
-
-module ClampHold() {
+module Top() {
+    translate([-1.5, 0.81, -TOTAL_HEIGHT / 2])
     difference() {
-        difference() {
-            cylinder(h = CAMERA_MOUNT_HEIGHT, d = CAMERA_DIAMETER + CAMERA_MOUNT_THICKNESS);
-            cylinder(h = CAMERA_MOUNT_HEIGHT, d = CAMERA_DIAMETER);
-        }
-
-        translate([-50, -CAMERA_DIAMETER_DIFFERENCE, 0])
-        cube(size = [100, 100, 100]);
-    }
-
-    translate([0, CAMERA_DIAMETER / -3, CAMERA_MOUNT_HEIGHT / 2])
-    difference() {
-        cube(size = [CAMERA_DIAMETER + CAMERA_MOUNT_THICKNESS, CAMERA_DIAMETER / 2, CAMERA_MOUNT_HEIGHT], center = true);
-        translate([0, CAMERA_DIAMETER / 3, -60])
-        cylinder(h = 100, d = CAMERA_DIAMETER + CAMERA_MOUNT_THICKNESS);
-    }
-
-    difference() {
-        translate([CAMERA_DIAMETER / 2, -CAMERA_MOUNT_THICKNESS, 0])
-        cube(size = [CAMERA_MOUNT_PLATE_LENGTH + CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_HEIGHT], center = false);
-
-        translate([(CAMERA_DIAMETER / 2) + CAMERA_MOUNT_THICKNESS + CAMERA_MOUNT_PLATE_LENGTH / 2, -53, CAMERA_MOUNT_HEIGHT / 2])
-        rotate([-90, 0, 0])
-        Cylindricalheadscrew(CLAMP_SCREW_HEAD_DIA, CLAMP_SCREW_DIA);
-    }
-    
-    difference() {
-        translate([(CAMERA_DIAMETER / -2) + -CAMERA_MOUNT_PLATE_LENGTH - CAMERA_MOUNT_THICKNESS, -CAMERA_MOUNT_THICKNESS, 0])
-        cube(size = [CAMERA_MOUNT_PLATE_LENGTH + CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_HEIGHT], center = false);
-
-        translate([(CAMERA_DIAMETER / -2) -+ CAMERA_MOUNT_THICKNESS + CAMERA_MOUNT_PLATE_LENGTH / -2, -53, CAMERA_MOUNT_HEIGHT / 2])
-        rotate([-90, 0, 0])
-        Cylindricalheadscrew(CLAMP_SCREW_HEAD_DIA, CLAMP_SCREW_DIA);
+        translate([-35, -45, 0])
+        import(file = "30mm.STL", center = true, convexity = 10);
+        cube(size = [505, 505, 30], center = true);
     }
 }
 
-module Clip() {
+module Bottom() {
+    translate([-1.5, 0.81, -TOTAL_HEIGHT / 2])
     difference() {
-        difference() {
-            cylinder(h = CAMERA_MOUNT_HEIGHT, d = CAMERA_DIAMETER + CAMERA_MOUNT_THICKNESS);
-            cylinder(h = CAMERA_MOUNT_HEIGHT, d = CAMERA_DIAMETER);
-        }
-
-        translate([-50, -CAMERA_DIAMETER_DIFFERENCE, 0])
-        cube(size = [100, 100, 100]);
-    }
-
-    difference() {
-        translate([CAMERA_DIAMETER / 2, -CAMERA_MOUNT_THICKNESS, 0])
-        cube(size = [CAMERA_MOUNT_PLATE_LENGTH + CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_HEIGHT], center = false);
-
-        translate([(CAMERA_DIAMETER / 2) + CAMERA_MOUNT_THICKNESS + CAMERA_MOUNT_PLATE_LENGTH / 2, -53, CAMERA_MOUNT_HEIGHT / 2])
-        rotate([-90, 0, 0])
-        Cylindricalheadscrew(CLAMP_SCREW_HEAD_DIA, CLAMP_SCREW_DIA);
-    }
-    
-    difference() {
-        translate([(CAMERA_DIAMETER / -2) + -CAMERA_MOUNT_PLATE_LENGTH - CAMERA_MOUNT_THICKNESS, -CAMERA_MOUNT_THICKNESS, 0])
-        cube(size = [CAMERA_MOUNT_PLATE_LENGTH + CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_THICKNESS, CAMERA_MOUNT_HEIGHT], center = false);
-
-        translate([(CAMERA_DIAMETER / -2) -+ CAMERA_MOUNT_THICKNESS + CAMERA_MOUNT_PLATE_LENGTH / -2, -53, CAMERA_MOUNT_HEIGHT / 2])
-        rotate([-90, 0, 0])
-        Cylindricalheadscrew(CLAMP_SCREW_HEAD_DIA, CLAMP_SCREW_DIA);
+        translate([-35, -45, 0])
+        import(file = "30mm.STL", center = true, convexity = 10);
+        translate([0, 0, 30])
+        cube(size = [505, 505, 30], center = true);
     }
 }
 
-module Connector() {
-    translate([0, (CAMERA_DIAMETER / -2) - CAMERA_MOUNT_THICKNESS / 2, CAMERA_MOUNT_HEIGHT / 2])
-    rotate([90, 0 ,0])
-    union() {
-        cube(size = [EXTRUSION_WIDTH + EXTRUSION_MOUNT_HEIGHT * 2, EXTRUSION_MOUNT_DEPTH, EXTRUSION_MOUNT_HEIGHT], center = true);
-
-        difference() {
-            translate([EXTRUSION_MOUNT_HEIGHT / 2 + EXTRUSION_WIDTH / 2, 0, EXTRUSION_MOUNT_HEIGHT / 2 + EXTRUSION_HEIGHT / 2])
-            rotate([0, 90, 0])
-            cube(size = [EXTRUSION_HEIGHT, EXTRUSION_MOUNT_DEPTH, EXTRUSION_MOUNT_HEIGHT], center = true);
-
-            translate([0, 0, 2 + EXTRUSION_HEIGHT / 2])
-            rotate([0, 90, 0])
-            linear_extrude(height = 100) 
-            circle(d = EXTRUSION_SCREW_DIAMETER);
-        }
-
-        difference() {
-            translate([EXTRUSION_MOUNT_HEIGHT / -2 + EXTRUSION_WIDTH / -2, 0, EXTRUSION_MOUNT_HEIGHT / 2 + EXTRUSION_HEIGHT / 2])
-            rotate([0, 90, 0])
-            cube(size = [EXTRUSION_HEIGHT, EXTRUSION_MOUNT_DEPTH, EXTRUSION_MOUNT_HEIGHT], center = true);
-
-            translate([-50, 0, 2 + EXTRUSION_HEIGHT / 2])
-            rotate([0, 90, 0])
-            linear_extrude(height = 100) 
-            circle(d = EXTRUSION_SCREW_DIAMETER);
-        }
+module Middle() {
+    rotate_extrude($fn=100) 
+    translate([(MIDDLE_OUTER_DIAM - (MIDDLE_OUTER_DIAM - MIDDLE_INNER_DIAM) / 2) / 2, 0])
+    difference() {
+        square(size = [(MIDDLE_OUTER_DIAM - MIDDLE_INNER_DIAM) / 2, MIDDLE_HEIGHT], center = true);
+        translate([MIDDLE_OUTER_DIAM - MIDDLE_INNER_DIAM - MIDDLE_INSET * 1.5, 0])
+        square(size = [MIDDLE_INSET, MIDDLE_INSET_HEIGHT], center = true);
     }
-
-    ClampHold();
 }
 
-translate([-100,0 ,0 ])
-Clip();
+module CameraPart() {
+    translate([0, 0, TOTAL_HEIGHT / 2])
+    Top();
+    Middle();
+    translate([0, 0, TOTAL_HEIGHT / -2])
+    Bottom();
+}
 
-Connector();
+module Holder(direction = "left") {
+    difference() {
+        if(direction == "right") {
+            translate([(HOLDER_CUBE_SIZE[0] / -2) / -2, (HOLDER_CUBE_SIZE[1] / -2) + CONNECTOR_DEPTH / -2, 0])
+            cube(size = [HOLDER_CUBE_SIZE[0] / 2, CONNECTOR_DEPTH, HOLDER_CUBE_SIZE[2]], center = true);
+        } else {
+            translate([(HOLDER_CUBE_SIZE[0] / -2) / 2, (HOLDER_CUBE_SIZE[1] / -2) + CONNECTOR_DEPTH / -2, 0])
+            cube(size = [HOLDER_CUBE_SIZE[0] / 2, CONNECTOR_DEPTH, HOLDER_CUBE_SIZE[2]], center = true);
+
+            difference() { 
+                translate([(HOLDER_CUBE_SIZE[0] / -2) - BEAM_DEPTH / -2, ((HOLDER_CUBE_SIZE[1] / -2) - ((BEAM_DEPTH + CONNECTOR_DEPTH) / 2) - CONNECTOR_DEPTH), 0])
+                cube(size = [BEAM_DEPTH, (BEAM_DEPTH + CONNECTOR_DEPTH), HOLDER_CUBE_SIZE[2]], center = true);
+
+                translate([-530, (HOLDER_CUBE_SIZE[1] / -2) - ((BEAM_DEPTH + CONNECTOR_DEPTH) / 4) - CONNECTOR_DEPTH, 0])
+                rotate([0, 90, 0])
+                Cylindricalheadscrew(head_diameter = SCREWCLAMP_HEAD_DIAM, tail_diameter = SCREWCLAMP_TAIL_DIAM);
+            }
+
+            difference() {
+                translate([0, ((HOLDER_CUBE_SIZE[1] / -2) + (-CONNECTOR_DEPTH) - BEAM_DEPTH) + CONNECTOR_DEPTH / -2, 0])
+                cube(size = [HOLDER_CUBE_SIZE[0], CONNECTOR_DEPTH, HOLDER_CUBE_SIZE[2]], center = true);
+
+                translate([-15, -590, 0])
+                rotate([-90, 0, 0])
+                Cylindricalheadscrew(head_diameter = SCREWCLAMP_HEAD_DIAM, tail_diameter = SCREWCLAMP_TAIL_DIAM);
+                
+                translate([5, -590, 0])
+                rotate([-90, 0, 0])
+                Cylindricalheadscrew(head_diameter = SCREWCLAMP_HEAD_DIAM, tail_diameter = SCREWCLAMP_TAIL_DIAM);      
+            }
+        }
+
+        translate([-400, (HOLDER_CUBE_SIZE[1] / 2) - 10, 0])
+        rotate([0, 90, 0])
+        Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
+
+        translate([-480, (HOLDER_CUBE_SIZE[1] / -2) - CONNECTOR_DEPTH / 2, 0])
+        rotate([0, 90, 0])
+        Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
+    }
+}
+
+module FullHolderPart() {
+    difference() {
+        cube(size = HOLDER_CUBE_SIZE, center = true);
+        Middle();
+        translate([0, 0, -MIDDLE_HEIGHT])
+        cylinder(h = 100, d = MIDDLE_INNER_DIAM + 1);
+
+        translate([-480, (HOLDER_CUBE_SIZE[1] / 2) - 10, 0])
+        rotate([0, 90, 0])
+        Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
+
+        translate([-540, (HOLDER_CUBE_SIZE[1] / -2) - CONNECTOR_DEPTH / 2, 0])
+        rotate([0, 90, 0])
+        Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
+    }
+}
+
+module HolderPartLeft() {
+    difference() {
+        FullHolderPart();
+        
+        translate([(HOLDER_CUBE_SIZE[0] / 2), 0, 0])
+        cube(size = HOLDER_CUBE_SIZE, center = true);
+    }
+
+    Holder();
+}
+
+module HolderPartRight() {
+    difference() {
+        FullHolderPart();
+        
+        translate([HOLDER_CUBE_SIZE[0] / -2, 0, 0])
+        cube(size = HOLDER_CUBE_SIZE, center = true);
+    }
+
+    Holder(direction = "right");
+}
+
+module PrintableHolder(tr = true) {
+    HolderPartLeft();
+    if(tr == true) {
+        translate([5, -30, 0])
+        HolderPartRight();
+    } else {
+        HolderPartRight();
+    }
+}
+
+difference() {
+    PrintableHolder(tr = false);
+    translate([95, -5, 0])
+    cube(size = [120, 120, 120], center = true);
+}
+
+translate([5, 0, 0])
+difference() {
+    PrintableHolder(tr = false);
+    translate([-25, -5, 0])
+    cube(size = [120, 120, 120], center = true);
+    translate([0, -125, 0])
+    cube(size = [120, 120, 120], center = true);
+}
