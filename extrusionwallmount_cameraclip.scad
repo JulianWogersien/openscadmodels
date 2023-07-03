@@ -2,9 +2,9 @@
 $fn = $preview ? 100 : 500;
 
 MIDDLE_HEIGHT = 30;
-MIDDLE_INSET_HEIGHT = 15;
-MIDDLE_INNER_DIAM = 50.2;
-MIDDLE_OUTER_DIAM = 71;
+MIDDLE_INSET_HEIGHT = 14;
+MIDDLE_INNER_DIAM = 51.2;
+MIDDLE_OUTER_DIAM = 72;
 MIDDLE_INSET = 10;
 TOTAL_HEIGHT = 30;
 
@@ -15,11 +15,11 @@ CONNECTOR_DEPTH = 20;
 BEAM_WIDTH = 40;
 BEAM_DEPTH = 20;
 
-SCREW_TAIL_DIAM = 4.8;
-SCREW_HEAD_DIAM = 8.4;
+SCREW_TAIL_DIAM = 4.9;
+SCREW_HEAD_DIAM = 8.5;
 
-SCREWCLAMP_HEAD_DIAM = 7.1;
-SCREWCLAMP_TAIL_DIAM = 3.9;
+SCREWCLAMP_HEAD_DIAM = 7.2;
+SCREWCLAMP_TAIL_DIAM = 4;
 
 module Cylindricalheadscrew(head_diameter, tail_diameter) {
     union() {
@@ -104,7 +104,7 @@ module Holder(direction = "left") {
         rotate([0, 90, 0])
         Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
 
-        translate([-480, (HOLDER_CUBE_SIZE[1] / -2) - CONNECTOR_DEPTH / 2, 0])
+        translate([-505, (HOLDER_CUBE_SIZE[1] / -2) - CONNECTOR_DEPTH / 2, 0])
         rotate([0, 90, 0])
         Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
     }
@@ -117,7 +117,7 @@ module FullHolderPart() {
         translate([0, 0, -MIDDLE_HEIGHT])
         cylinder(h = 100, d = MIDDLE_INNER_DIAM + 1);
 
-        translate([-480, (HOLDER_CUBE_SIZE[1] / 2) - 10, 0])
+        translate([-505, (HOLDER_CUBE_SIZE[1] / 2) - 10, 0])
         rotate([0, 90, 0])
         Cylindricalheadscrew(head_diameter = SCREW_HEAD_DIAM, tail_diameter = SCREW_TAIL_DIAM);
 
@@ -159,17 +159,21 @@ module PrintableHolder(tr = true) {
     }
 }
 
-difference() {
-    PrintableHolder(tr = false);
-    translate([95, -5, 0])
-    cube(size = [120, 120, 120], center = true);
+module PrintableHolder2() {
+    difference() {
+        PrintableHolder(tr = false);
+        translate([65, -5, 0])
+        cube(size = [120, 120, 120], center = true);
+    }
+
+    translate([5, 0, 0])
+    difference() {
+        PrintableHolder(tr = false);
+        translate([-55, -5, 0])
+        cube(size = [120, 120, 120], center = true);
+        translate([0, -125, 0])
+        cube(size = [120, 120, 120], center = true);
+    }
 }
 
-translate([5, 0, 0])
-difference() {
-    PrintableHolder(tr = false);
-    translate([-25, -5, 0])
-    cube(size = [120, 120, 120], center = true);
-    translate([0, -125, 0])
-    cube(size = [120, 120, 120], center = true);
-}
+PrintableHolder2();
