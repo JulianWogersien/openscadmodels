@@ -1,7 +1,7 @@
 
 
 difference(){
-    cube(size=[10,10,8.5], center=true);
+    cube(size=[10,10,8.5 / 2], center=true);
     
     translate([0,0,-5])
     linear_extrude(10)
